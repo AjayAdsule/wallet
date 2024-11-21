@@ -24,7 +24,7 @@ export default function useSeedPhrase() {
    */
   async function saveMnemonic() {
     const encryptedMnemonic = SecureStorage.encrypt(mnemonic);
-    localStorage.setItem("vault", encryptedMnemonic);
+    localStorage.setItem("vault", JSON.stringify(encryptedMnemonic));
     await generateAddress();
   }
 
@@ -41,9 +41,13 @@ export default function useSeedPhrase() {
     const privateKey = child.privateKey;
     const wallet = new Wallet(privateKey);
     setCurrentIndex(currentIndex + 1);
+    const encryptedAddress = SecureStorage.encrypt(
+      JSON.stringify([...addresses, wallet.address])
+    );
+
+    localStorage.setItem("vault_address", JSON.stringify(encryptedAddress));
     setAddresses([...addresses, wallet.address]);
   }
-
   /**
    * Whether the mnemonic phrase has been generated
    */
