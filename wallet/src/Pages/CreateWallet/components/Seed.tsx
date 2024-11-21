@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SecureStorage } from "@/utils/secureStorage ";
-import { generateMnemonic } from "bip39";
-import { useState } from "react";
+import useSeedPhrase from "../hooks/useSeedPhrase";
 
 /**
  * Generates a BIP39 mnemonic seed phrase and displays it in a grid.
@@ -11,30 +9,12 @@ import { useState } from "react";
  * @returns A JSX.Element
  */
 const SeedPhraseGenerator: React.FC = () => {
-  const [mnemonic, setMnemonic] = useState<string>("");
-
-  /**
-   * Generates a BIP39 mnemonic seed phrase using the `bip39` library
-   * @returns A promise that resolves with the generated mnemonic
-   */
-  async function generateMnemonicPhrase(): Promise<void> {
-    const mn = await generateMnemonic();
-    setMnemonic(mn);
-  }
-
-  /**
-   * Encrypts the mnemonic phrase using the `SecureStorage` class and saves it
-   * to local storage under the key "vault"
-   */
-  function saveMnemonic() {
-    const encryptedMnemonic = SecureStorage.encrypt(mnemonic);
-    localStorage.setItem("vault", encryptedMnemonic);
-  }
-
-  /**
-   * Whether the mnemonic phrase has been generated
-   */
-  const isMnemonicGenerated = mnemonic.length > 0;
+  const {
+    generateMnemonicPhrase,
+    isMnemonicGenerated,
+    saveMnemonic,
+    mnemonic,
+  } = useSeedPhrase();
 
   return (
     <div className="w-full max-w-md mx-auto">
