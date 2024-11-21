@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SecureStorage } from "@/utils/secureStorage ";
 import { generateMnemonic } from "bip39";
 import { useState } from "react";
 
@@ -9,15 +10,25 @@ import { useState } from "react";
  * The phrase is not displayed until the button is clicked.
  * @returns A JSX.Element
  */
-const Seed = () => {
-  const [mnemonic, setMnemonic] = useState("");
+const SeedPhraseGenerator: React.FC = () => {
+  const [mnemonic, setMnemonic] = useState<string>("");
 
   /**
-   * Generates a BIP39 mnemonic seed phrase
+   * Generates a BIP39 mnemonic seed phrase using the `bip39` library
+   * @returns A promise that resolves with the generated mnemonic
    */
-  async function generateMnemonicPhrase() {
+  async function generateMnemonicPhrase(): Promise<void> {
     const mn = await generateMnemonic();
     setMnemonic(mn);
+  }
+
+  /**
+   * Encrypts the mnemonic phrase using the `SecureStorage` class and saves it
+   * to local storage under the key "vault"
+   */
+  function saveMnemonic() {
+    const encryptedMnemonic = SecureStorage.encrypt(mnemonic);
+    localStorage.setItem("vault", encryptedMnemonic);
   }
 
   /**
@@ -26,7 +37,7 @@ const Seed = () => {
   const isMnemonicGenerated = mnemonic.length > 0;
 
   return (
-    <div>
+    <div className="w-full max-w-md mx-auto">
       <div
         className={`border h-[200px] w-[450px] p-2 mt-6  flex justify-center  items-center ${
           isMnemonicGenerated ? "" : "bg-foreground"
@@ -45,7 +56,10 @@ const Seed = () => {
         )}
       </div>
       <div className="flex mt-4  justify-center">
-        <Button className="" onClick={generateMnemonicPhrase}>
+        <Button
+          className=""
+          onClick={isMnemonicGenerated ? saveMnemonic : generateMnemonicPhrase}
+        >
           {isMnemonicGenerated ? "Next" : " Reveal Secret Recovery Phrase"}
         </Button>
       </div>
@@ -53,4 +67,4 @@ const Seed = () => {
   );
 };
 
-export default Seed;
+export default SeedPhraseGenerator;

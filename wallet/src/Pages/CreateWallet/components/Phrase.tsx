@@ -1,4 +1,4 @@
-import Seed from "./Seed";
+import SeedPhraseGenerator from "./Seed";
 
 const Phrase = () => {
   return (
@@ -23,7 +23,7 @@ const Phrase = () => {
           </li>
         </ul>
       </div>
-      <Seed />
+      <SeedPhraseGenerator />
     </div>
   );
 };
