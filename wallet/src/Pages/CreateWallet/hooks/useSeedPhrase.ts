@@ -3,7 +3,7 @@ import { generateMnemonic, mnemonicToSeed } from "bip39";
 import { Wallet } from "ethers";
 import { HDNodeWallet } from "ethers";
 import { useState } from "react";
-
+import { NavigateFunction } from "react-router-dom";
 export default function useSeedPhrase() {
   const [mnemonic, setMnemonic] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -22,10 +22,12 @@ export default function useSeedPhrase() {
    * Encrypts the mnemonic phrase using the `SecureStorage` class and saves it
    * to local storage under the key "vault"
    */
-  async function saveMnemonic() {
+  async function saveMnemonic(next: NavigateFunction) {
+    console.log(mnemonic);
     const encryptedMnemonic = SecureStorage.encrypt(mnemonic);
     localStorage.setItem("vault", JSON.stringify(encryptedMnemonic));
     await generateAddress();
+    next("/home");
   }
 
   /**

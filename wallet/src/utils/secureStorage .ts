@@ -9,7 +9,23 @@ export const SecureStorage = {
    * @returns An encrypted string.
    */
   encrypt: (data: string): string => {
-    return CryptoJS.AES.encrypt(data, import.meta.env.VITE_SECRET).toString();
+    try {
+      // Ensure the secret key is available
+      if (!import.meta.env.VITE_SECRET) {
+        throw new Error("Encryption key is not defined");
+      }
+
+      // Simple encryption
+      const encrypted = CryptoJS.AES.encrypt(
+        data,
+        import.meta.env.VITE_SECRET
+      ).toString();
+
+      return encrypted;
+    } catch (error) {
+      console.error("Encryption error:", error);
+      throw error;
+    }
   },
 
   /**
@@ -20,10 +36,21 @@ export const SecureStorage = {
    * @returns The decrypted string.
    */
   decrypt: (encryptedData: string): string => {
-    const bytes = CryptoJS.AES.decrypt(
-      encryptedData,
-      import.meta.env.VITE_SECRET
-    );
-    return bytes.toString(CryptoJS.enc.Utf8);
+    try {
+      // Ensure the secret key is available
+      if (!import.meta.env.VITE_SECRET) {
+        throw new Error("Encryption key is not defined");
+      }
+
+      const decrypted = CryptoJS.AES.decrypt(
+        encryptedData,
+        import.meta.env.VITE_SECRET
+      );
+
+      return decrypted.toString(CryptoJS.enc.Utf8);
+    } catch (error) {
+      console.error("Decryption error:", error);
+      throw error;
+    }
   },
 };

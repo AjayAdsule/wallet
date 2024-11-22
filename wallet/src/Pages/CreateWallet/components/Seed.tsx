@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useSeedPhrase from "../hooks/useSeedPhrase";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Generates a BIP39 mnemonic seed phrase and displays it in a grid.
@@ -9,6 +10,7 @@ import useSeedPhrase from "../hooks/useSeedPhrase";
  * @returns A JSX.Element
  */
 const SeedPhraseGenerator: React.FC = () => {
+  const navigate = useNavigate();
   const {
     generateMnemonicPhrase,
     isMnemonicGenerated,
@@ -38,7 +40,11 @@ const SeedPhraseGenerator: React.FC = () => {
       <div className="flex mt-4  justify-center">
         <Button
           className=""
-          onClick={isMnemonicGenerated ? saveMnemonic : generateMnemonicPhrase}
+          onClick={
+            isMnemonicGenerated
+              ? () => saveMnemonic(navigate)
+              : generateMnemonicPhrase
+          }
         >
           {isMnemonicGenerated ? "Next" : " Reveal Secret Recovery Phrase"}
         </Button>
