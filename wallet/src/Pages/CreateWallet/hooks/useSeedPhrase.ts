@@ -23,7 +23,6 @@ export default function useSeedPhrase() {
    * to local storage under the key "vault"
    */
   async function saveMnemonic(next: NavigateFunction) {
-    console.log(mnemonic);
     const encryptedMnemonic = SecureStorage.encrypt(mnemonic);
     localStorage.setItem("vault", JSON.stringify(encryptedMnemonic));
     await generateAddress();
