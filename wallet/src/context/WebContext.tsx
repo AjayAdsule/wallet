@@ -1,15 +1,14 @@
-import React, { createContext, useContext, useState } from "react";
+import getWeb3State from "@/utils/web3State.utils";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface Web3State {
   account: string | null;
-  chainId: number | null;
-  isConnected: boolean;
+  balance: string | null;
 }
 
 const initialState: Web3State = {
   account: null,
-  chainId: null,
-  isConnected: false,
+  balance: null,
 };
 
 const Web3Context = createContext<
@@ -37,6 +36,18 @@ const Web3Provider: React.FC<{ children: React.ReactNode }> = ({
     web3State,
     setWeb3State,
   };
+
+  const handleWeb3State = async () => {
+    const { balance, walletAddress } = await getWeb3State();
+    setWeb3State({
+      account: walletAddress[0],
+      balance,
+    });
+  };
+
+  useEffect(() => {
+    handleWeb3State();
+  }, []);
 
   // Return the Web3Context Provider with the given value and children
   return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;
