@@ -41,12 +41,17 @@ export default function useSeedPhrase() {
     const child = hdNode.derivePath(derivationPath);
     const privateKey = child.privateKey;
     const wallet = new Wallet(privateKey);
+
     setCurrentIndex(currentIndex + 1);
     const encryptedAddress = SecureStorage.encrypt(
       JSON.stringify([...addresses, wallet.address])
     );
-
+    const encryptedPrivateKey = SecureStorage.encrypt(wallet.privateKey);
     localStorage.setItem("vault_address", JSON.stringify(encryptedAddress));
+    localStorage.setItem(
+      "vault_privateKey",
+      JSON.stringify(encryptedPrivateKey)
+    );
     setAddresses([...addresses, wallet.address]);
   }
   /**
