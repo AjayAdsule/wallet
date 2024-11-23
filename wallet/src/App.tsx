@@ -18,7 +18,7 @@ function App() {
   ]);
 
   return (
-    <div className="  bg-background text-foreground h-screen">
+    <div className=" dark bg-background text-foreground h-screen">
       <Web3Provider>
         <RouterProvider router={router} />
       </Web3Provider>

@@ -13,7 +13,7 @@ export function AccountNetwork() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Ethereum Mainnet</Button>
+        <Button variant="default">Ethereum Mainnet</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
